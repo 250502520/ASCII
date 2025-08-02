@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASCII艺术生成器</title>
-    <script src="https://cdn.jsdelivr.net/npm/figlet@1.5.2/lib/figlet.min.js"></script>
     <style>
         :root {
             --primary: #ff6b6b;
@@ -166,6 +165,7 @@
             font-size: 8px;
             color: #e0e0e0;
             min-height: 300px;
+            text-align: center;
         }
         
         .result-controls {
@@ -303,6 +303,10 @@
             transform: translateX(0);
         }
         
+        .notification.error {
+            background: var(--primary);
+        }
+        
         @media (max-width: 768px) {
             .content {
                 flex-direction: column;
@@ -337,17 +341,6 @@
                 </div>
                 
                 <div class="input-group">
-                    <label for="font-select">字体样式</label>
-                    <select id="font-select">
-                        <option value="Standard">标准</option>
-                        <option value="Ghost">幽灵</option>
-                        <option value="Graffiti">涂鸦</option>
-                        <option value="Slant">斜体</option>
-                        <option value="Block">方块</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
                     <label for="image-input">或上传图片</label>
                     <input type="file" id="image-input" accept="image/*">
                     <img id="image-preview" class="image-preview" alt="图片预览">
@@ -374,14 +367,14 @@
                 <h2 class="section-title">结果预览</h2>
                 <div class="result-container">
                     <div class="result" id="ascii-result">
-                        ██╗  ██╗███████╗██╗     ██╗      ██████╗     ████████╗ ██████╗ 
-                        ██║  ██║██╔════╝██║     ██║     ██╔═══██╗    ╚══██╔══╝██╔═══██╗
-                        ███████║█████╗  ██║     ██║     ██║   ██║       ██║   ██║   ██║
-                        ██╔══██║██╔══╝  ██║     ██║     ██║   ██║       ██║   ██║   ██║
-                        ██║  ██║███████╗███████╗███████╗╚██████╔╝       ██║   ╚██████╔╝
-                        ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝        ╚═╝    ╚═════╝ 
-                        
-                        请使用左侧控制面板生成ASCII艺术
+  ██╗  ██╗███████╗██╗     ██╗      ██████╗     ████████╗ ██████╗ 
+  ██║  ██║██╔════╝██║     ██║     ██╔═══██╗    ╚══██╔══╝██╔═══██╗
+  ███████║█████╗  ██║     ██║     ██║   ██║       ██║   ██║   ██║
+  ██╔══██║██╔══╝  ██║     ██║     ██║   ██║       ██║   ██║   ██║
+  ██║  ██║███████╗███████╗███████╗╚██████╔╝       ██║   ╚██████╔╝
+  ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝        ╚═╝    ╚═════╝ 
+  
+  请使用左侧控制面板生成ASCII艺术
                     </div>
                 </div>
                 
@@ -429,8 +422,7 @@
             <div class="step">
                 <h3>文本转换</h3>
                 <p>1. 在文本框中输入文字</p>
-                <p>2. 选择字体样式</p>
-                <p>3. 点击"文本转ASCII"按钮</p>
+                <p>2. 点击"文本转ASCII"按钮</p>
             </div>
             
             <div class="step">
@@ -456,7 +448,6 @@
     <script>
         // DOM元素
         const textInput = document.getElementById('text-input');
-        const fontSelect = document.getElementById('font-select');
         const imageInput = document.getElementById('image-input');
         const imagePreview = document.getElementById('image-preview');
         const charDensity = document.getElementById('char-density');
@@ -467,31 +458,381 @@
         const copyBtn = document.getElementById('copy-btn');
         const notification = document.getElementById('notification');
         
-        // 修复文本转换功能
+        // 内置ASCII字体映射
+        const asciiFontMap = {
+            'A': [
+                " ███╗  ",
+                "██╔██╗ ",
+                "██║╚██╗",
+                "██║ ██║",
+                "╚███╔██╗",
+                " ╚══╝╚═╝"
+            ],
+            'B': [
+                "██████╗ ",
+                "██╔══██╗",
+                "██████╔╝",
+                "██╔══██╗",
+                "██████╔╝",
+                "╚═════╝ "
+            ],
+            'C': [
+                " █████╗ ",
+                "██╔═══██╗",
+                "██║   ██║",
+                "██║   ██║",
+                "╚██████╔╝",
+                " ╚═════╝ "
+            ],
+            'D': [
+                "██████╗ ",
+                "██╔══██╗",
+                "██║  ██║",
+                "██║  ██║",
+                "██████╔╝",
+                "╚═════╝ "
+            ],
+            'E': [
+                "███████╗",
+                "██╔════╝",
+                "██████╗ ",
+                "██╔═══╝ ",
+                "███████╗",
+                "╚══════╝"
+            ],
+            'F': [
+                "███████╗",
+                "██╔════╝",
+                "█████╗  ",
+                "██╔══╝  ",
+                "██║     ",
+                "╚═╝     "
+            ],
+            'G': [
+                " ██████╗ ",
+                "██╔════╝ ",
+                "██║  ███╗",
+                "██║   ██║",
+                "╚██████╔╝",
+                " ╚═════╝ "
+            ],
+            'H': [
+                "██╗  ██╗",
+                "██║  ██║",
+                "███████║",
+                "██╔══██║",
+                "██║  ██║",
+                "╚═╝  ╚═╝"
+            ],
+            'I': [
+                "██╗",
+                "██║",
+                "██║",
+                "██║",
+                "██║",
+                "╚═╝"
+            ],
+            'J': [
+                "     ██╗",
+                "     ██║",
+                "     ██║",
+                "██   ██║",
+                "╚█████╔╝",
+                " ╚════╝ "
+            ],
+            'K': [
+                "██╗  ██╗",
+                "██║ ██╔╝",
+                "█████╔╝ ",
+                "██╔═██╗ ",
+                "██║  ██╗",
+                "╚═╝  ╚═╝"
+            ],
+            'L': [
+                "██╗     ",
+                "██║     ",
+                "██║     ",
+                "██║     ",
+                "███████╗",
+                "╚══════╝"
+            ],
+            'M': [
+                "███╗   ███╗",
+                "████╗ ████║",
+                "██╔████╔██║",
+                "██║╚██╔╝██║",
+                "██║ ╚═╝ ██║",
+                "╚═╝     ╚═╝"
+            ],
+            'N': [
+                "███╗   ██╗",
+                "████╗  ██║",
+                "██╔██╗ ██║",
+                "██║╚██╗██║",
+                "██║ ╚████║",
+                "╚═╝  ╚═══╝"
+            ],
+            'O': [
+                " █████╗ ",
+                "██╔══██╗",
+                "██║  ██║",
+                "██║  ██║",
+                "╚█████╔╝",
+                " ╚════╝ "
+            ],
+            'P': [
+                "██████╗ ",
+                "██╔══██╗",
+                "██████╔╝",
+                "██╔═══╝ ",
+                "██║     ",
+                "╚═╝     "
+            ],
+            'Q': [
+                " ██████╗ ",
+                "██╔═══██╗",
+                "██║   ██║",
+                "██║▄▄ ██║",
+                "╚██████╔╝",
+                " ╚══▀▀═╝ "
+            ],
+            'R': [
+                "██████╗ ",
+                "██╔══██╗",
+                "██████╔╝",
+                "██╔══██╗",
+                "██║  ██║",
+                "╚═╝  ╚═╝"
+            ],
+            'S': [
+                " ███████╗",
+                "██╔═════╝",
+                "███████╗ ",
+                "╚════██╗",
+                "███████║",
+                "╚══════╝"
+            ],
+            'T': [
+                "████████╗",
+                "╚══██╔══╝",
+                "   ██║   ",
+                "   ██║   ",
+                "   ██║   ",
+                "   ╚═╝   "
+            ],
+            'U': [
+                "██╗   ██╗",
+                "██║   ██║",
+                "██║   ██║",
+                "██║   ██║",
+                "╚██████╔╝",
+                " ╚═════╝ "
+            ],
+            'V': [
+                "██╗   ██╗",
+                "██║   ██║",
+                "╚██╗ ██╔╝",
+                " ╚████╔╝ ",
+                "  ╚██╔╝  ",
+                "   ╚═╝   "
+            ],
+            'W': [
+                "██╗    ██╗",
+                "██║    ██║",
+                "██║ █╗ ██║",
+                "██║███╗██║",
+                "╚███╔███╔╝",
+                " ╚══╝╚══╝ "
+            ],
+            'X': [
+                "██╗  ██╗",
+                "╚██╗██╔╝",
+                " ╚███╔╝ ",
+                " ██╔██╗ ",
+                "██╔╝ ██╗",
+                "╚═╝  ╚═╝"
+            ],
+            'Y': [
+                "██╗   ██╗",
+                "╚██╗ ██╔╝",
+                " ╚████╔╝ ",
+                "  ╚██╔╝  ",
+                "   ██║   ",
+                "   ╚═╝   "
+            ],
+            'Z': [
+                "███████╗",
+                "╚════██╗",
+                "  ███╔═╝",
+                "██╔══╝  ",
+                "███████╗",
+                "╚══════╝"
+            ],
+            ' ': [
+                "   ",
+                "   ",
+                "   ",
+                "   ",
+                "   ",
+                "   "
+            ],
+            '!': [
+                "██╗",
+                "██║",
+                "██║",
+                "╚═╝",
+                "██╗",
+                "╚═╝"
+            ],
+            '?': [
+                "█████╗ ",
+                "╚════██╗",
+                " █████╔╝",
+                " ╚═══██╗",
+                "     ██║",
+                "    ██╔╝"
+            ],
+            '.': [
+                "   ",
+                "   ",
+                "   ",
+                "   ",
+                "██╗",
+                "╚═╝"
+            ],
+            ',': [
+                "   ",
+                "   ",
+                "   ",
+                "██╗",
+                "██║",
+                "╚═╝"
+            ],
+            ':': [
+                "   ",
+                "██╗",
+                "╚═╝",
+                "██╗",
+                "╚═╝",
+                "   "
+            ],
+            '0': [
+                " █████╗ ",
+                "██╔══██╗",
+                "██║  ██║",
+                "██║  ██║",
+                "╚█████╔╝",
+                " ╚════╝ "
+            ],
+            '1': [
+                " ██╗",
+                "███║",
+                "╚██║",
+                " ██║",
+                " ██║",
+                " ╚═╝"
+            ],
+            '2': [
+                "██████╗ ",
+                "╚════██╗",
+                " █████╔╝",
+                "██╔═══╝ ",
+                "███████╗",
+                "╚══════╝"
+            ],
+            '3': [
+                "██████╗ ",
+                "╚════██╗",
+                " █████╔╝",
+                " ╚═══██╗",
+                "██████╔╝",
+                "╚═════╝ "
+            ],
+            '4': [
+                "██╗  ██╗",
+                "██║  ██║",
+                "███████║",
+                "╚════██║",
+                "     ██║",
+                "     ╚═╝"
+            ],
+            '5': [
+                "███████╗",
+                "██╔════╝",
+                "███████╗",
+                "╚════██║",
+                "███████║",
+                "╚══════╝"
+            ],
+            '6': [
+                " ██████╗ ",
+                "██╔════╝ ",
+                "███████╗ ",
+                "██╔═══██╗",
+                "╚██████╔╝",
+                " ╚═════╝ "
+            ],
+            '7': [
+                "███████╗",
+                "╚════██║",
+                "    ██╔╝",
+                "   ██╔╝ ",
+                "   ██║  ",
+                "   ╚═╝  "
+            ],
+            '8': [
+                " █████╗ ",
+                "██╔══██╗",
+                "╚█████╔╝",
+                "██╔══██╗",
+                "╚█████╔╝",
+                " ╚════╝ "
+            ],
+            '9': [
+                " █████╗ ",
+                "██╔══██╗",
+                "╚██████║",
+                " ╚═══██║",
+                " █████╔╝",
+                " ╚════╝ "
+            ]
+        };
+        
+        // 文本转ASCII - 使用内置字体
+        function convertTextToAscii(text) {
+            // 转换为大写以获得更好的效果
+            const upperText = text.toUpperCase();
+            const lines = Array(6).fill('');
+            
+            for (let char of upperText) {
+                const charArt = asciiFontMap[char] || asciiFontMap[' '];
+                
+                for (let i = 0; i < 6; i++) {
+                    if (lines[i] === undefined) lines[i] = '';
+                    lines[i] += charArt[i] || '   ';
+                }
+            }
+            
+            return lines.join('\n');
+        }
+        
+        // 文本转ASCII
         convertTextBtn.addEventListener('click', () => {
             const text = textInput.value.trim();
-            const font = fontSelect.value;
             
             if (!text) {
                 showNotification('请输入要转换的文本', 'error');
                 return;
             }
             
-            // 使用Figlet.js转换文本
-            figlet.text(text, {
-                font: font,
-                horizontalLayout: 'default',
-                verticalLayout: 'default',
-                width: 80,
-                whitespaceBreak: true
-            }, function(err, data) {
-                if (err) {
-                    console.error('转换出错:', err);
-                    asciiResult.textContent = '转换出错: ' + err.message + '\n请尝试不同的字体或较短的文本';
-                    return;
-                }
-                asciiResult.textContent = data || '无输出，请重试';
-            });
+            try {
+                const asciiArt = convertTextToAscii(text);
+                asciiResult.textContent = asciiArt;
+            } catch (err) {
+                console.error('转换出错:', err);
+                asciiResult.textContent = '转换出错: ' + err.message + '\n请尝试不同的文本';
+                showNotification('文本转换出错', 'error');
+            }
         });
         
         // 图片预览
@@ -620,6 +961,7 @@
                 notification.style.background = 'linear-gradient(to right, var(--accent), #96c93d)';
             } else {
                 notification.style.background = 'linear-gradient(to right, var(--primary), #ff5e62)';
+                notification.className += ' error';
             }
             
             notification.classList.add('show');

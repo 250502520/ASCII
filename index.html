@@ -89,6 +89,9 @@
             color: var(--primary);
             border-bottom: 1px solid #444;
             padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .input-group {
@@ -161,15 +164,23 @@
             overflow: auto;
         }
         
+        .result-wrapper {
+            overflow: auto;
+            min-height: 200px;
+            max-height: 250px;
+        }
+        
         .result {
             font-family: monospace;
             white-space: pre;
             line-height: 1.1;
-            font-size: 7px;
             color: #e0e0e0;
             min-height: 200px;
             text-align: center;
             overflow-x: auto;
+            overflow-y: hidden;
+            padding: 5px;
+            transition: font-size 0.3s ease;
         }
         
         .result-controls {
@@ -314,6 +325,40 @@
             background: var(--primary);
         }
         
+        /* 缩放控制 */
+        .zoom-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .zoom-btn {
+            background: rgba(10, 10, 25, 0.5);
+            color: white;
+            border: 1px solid #444;
+            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+        
+        .zoom-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .zoom-value {
+            min-width: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #d0d0d0;
+        }
+        
         /* 移动设备布局优化 */
         @media (max-width: 768px) {
             .content {
@@ -327,6 +372,9 @@
             
             .section-title {
                 font-size: 1.3rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
             }
             
             .panel {
@@ -355,7 +403,7 @@
             }
             
             .result {
-                font-size: 6px;
+                font-size: 5px;
             }
         }
         
@@ -386,8 +434,9 @@
                 max-height: 280px;
             }
             
-            .result {
+            .result-wrapper {
                 min-height: 180px;
+                max-height: 230px;
             }
             
             .feature-icon {
@@ -478,9 +527,17 @@
             </div>
             
             <div class="panel">
-                <h2 class="section-title">结果预览</h2>
+                <h2 class="section-title">
+                    <span>结果预览</span>
+                    <div class="zoom-controls">
+                        <div class="zoom-btn" id="zoom-out">-</div>
+                        <div class="zoom-value" id="zoom-value">100%</div>
+                        <div class="zoom-btn" id="zoom-in">+</div>
+                    </div>
+                </h2>
                 <div class="result-container">
-                    <div class="result" id="ascii-result">
+                    <div class="result-wrapper">
+                        <div class="result" id="ascii-result">
   ██╗  ██╗███████╗██╗     ██╗      ██████╗     ████████╗ ██████╗ 
   ██║  ██║██╔════╝██║     ██║     ██╔═══██╗    ╚══██╔══╝██╔═══██╗
   ███████║█████╗  ██║     ██║     ██║   ██║       ██║   ██║   ██║
@@ -489,6 +546,7 @@
   ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝        ╚═╝    ╚═════╝ 
   
   请使用左侧控制面板生成ASCII艺术
+                        </div>
                     </div>
                 </div>
                 
@@ -571,6 +629,40 @@
         const downloadBtn = document.getElementById('download-btn');
         const copyBtn = document.getElementById('copy-btn');
         const notification = document.getElementById('notification');
+        const zoomInBtn = document.getElementById('zoom-in');
+        const zoomOutBtn = document.getElementById('zoom-out');
+        const zoomValue = document.getElementById('zoom-value');
+        
+        // 字体缩放功能
+        let fontSize = 8; // 桌面端初始值
+        let zoomLevel = 100; // 百分比
+        
+        // 更新缩放显示
+        function updateZoomDisplay() {
+            zoomValue.textContent = `${zoomLevel}%`;
+            asciiResult.style.fontSize = `${fontSize}px`;
+        }
+        
+        // 放大
+        zoomInBtn.addEventListener('click', () => {
+            if (fontSize < 20) {
+                fontSize += 1;
+                zoomLevel += 12.5;
+                updateZoomDisplay();
+            }
+        });
+        
+        // 缩小
+        zoomOutBtn.addEventListener('click', () => {
+            if (fontSize > 4) {
+                fontSize -= 1;
+                zoomLevel -= 12.5;
+                updateZoomDisplay();
+            }
+        });
+        
+        // 初始缩放显示
+        updateZoomDisplay();
         
         // 内置ASCII字体映射
         const asciiFontMap = {

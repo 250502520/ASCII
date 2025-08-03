@@ -25,7 +25,7 @@
             background: linear-gradient(135deg, var(--darker), var(--dark));
             color: var(--light);
             min-height: 100vh;
-            padding: 20px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,20 +38,20 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             overflow: hidden;
-            margin-top: 20px;
+            margin-top: 12px;
             backdrop-filter: blur(10px);
         }
         
         header {
             background: rgba(22, 33, 62, 0.9);
-            padding: 25px;
+            padding: 20px 15px;
             text-align: center;
             border-bottom: 2px solid var(--primary);
         }
         
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
+            font-size: 2.1rem;
+            margin-bottom: 8px;
             background: linear-gradient(to right, #ff9966, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -59,57 +59,58 @@
         }
         
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             opacity: 0.9;
             max-width: 700px;
-            margin: 10px auto 0;
+            margin: 8px auto 0;
             color: #e0e0e0;
+            line-height: 1.4;
         }
         
         .content {
             display: flex;
             flex-wrap: wrap;
-            padding: 25px;
-            gap: 20px;
+            padding: 15px;
+            gap: 15px;
         }
         
         .panel {
             flex: 1;
-            min-width: 300px;
-            padding: 25px;
+            min-width: 0;
+            padding: 20px 15px;
             background: rgba(30, 30, 50, 0.7);
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .section-title {
-            font-size: 1.6rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
             color: var(--primary);
             border-bottom: 1px solid #444;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 500;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #d0d0d0;
         }
         
         input, textarea, select {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: rgba(10, 10, 25, 0.5);
             border: 1px solid #444;
             border-radius: 8px;
             color: var(--light);
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: all 0.3s;
         }
         
@@ -123,16 +124,18 @@
             background: linear-gradient(to right, var(--primary), #ff5e62);
             color: white;
             border: none;
-            padding: 14px 24px;
+            padding: 12px 18px;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 8px 10px 8px 0;
+            margin: 6px 8px 6px 0;
             font-weight: bold;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
         }
         
         button:hover {
@@ -152,9 +155,9 @@
             position: relative;
             background: rgba(10, 10, 25, 0.5);
             border-radius: 8px;
-            padding: 20px;
-            min-height: 350px;
-            max-height: 500px;
+            padding: 15px;
+            min-height: 250px;
+            max-height: 300px;
             overflow: auto;
         }
         
@@ -162,24 +165,25 @@
             font-family: monospace;
             white-space: pre;
             line-height: 1.1;
-            font-size: 8px;
+            font-size: 7px;
             color: #e0e0e0;
-            min-height: 300px;
+            min-height: 200px;
             text-align: center;
+            overflow-x: auto;
         }
         
         .result-controls {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 20px;
-            gap: 10px;
+            margin-top: 15px;
+            gap: 8px;
         }
         
         .image-preview {
             width: 100%;
-            max-height: 200px;
+            max-height: 180px;
             object-fit: contain;
-            margin-top: 15px;
+            margin-top: 12px;
             display: none;
             border-radius: 8px;
             border: 1px solid #444;
@@ -189,8 +193,8 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-            margin-top: 40px;
+            gap: 15px;
+            margin-top: 30px;
             max-width: 1200px;
             width: 100%;
         }
@@ -198,9 +202,9 @@
         .feature-card {
             background: rgba(22, 33, 62, 0.8);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px 15px;
             flex: 1;
-            min-width: 250px;
+            min-width: 0;
             text-align: center;
             box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
@@ -213,21 +217,21 @@
         }
         
         .feature-icon {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
             color: var(--primary);
             text-shadow: 0 2px 10px rgba(255, 107, 107, 0.5);
         }
         
         .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
             color: #ff9966;
         }
         
         .feature-card p {
-            font-size: 1.05rem;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            line-height: 1.5;
             color: #d0d0d0;
         }
         
@@ -236,29 +240,29 @@
             width: 100%;
             background: rgba(22, 33, 62, 0.8);
             border-radius: 12px;
-            padding: 30px;
-            margin-top: 40px;
+            padding: 20px 15px;
+            margin-top: 30px;
             border: 1px solid rgba(255, 107, 107, 0.3);
         }
         
         .instructions h2 {
             color: var(--primary);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.7rem;
         }
         
         .steps {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 15px;
         }
         
         .step {
             flex: 1;
-            min-width: 250px;
-            padding: 20px;
+            min-width: 0;
+            padding: 15px;
             background: rgba(30, 30, 50, 0.7);
             border-radius: 10px;
             border-left: 4px solid var(--primary);
@@ -266,59 +270,166 @@
         
         .step h3 {
             color: #ff9966;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
         }
         
         .step p {
-            font-size: 1.1rem;
-            line-height: 1.7;
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: #d0d0d0;
         }
         
         footer {
-            margin: 50px 0 20px;
+            margin: 30px 0 15px;
             text-align: center;
-            padding: 20px;
-            font-size: 1rem;
+            padding: 15px;
+            font-size: 0.9rem;
             opacity: 0.8;
             color: #b0b0b0;
         }
         
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            padding: 12px 20px;
             background: var(--accent);
             color: white;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transform: translateX(150%);
             transition: transform 0.4s ease;
             z-index: 1000;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
         }
         
         .notification.show {
-            transform: translateX(0);
+            transform: translateX(-50%) translateY(0);
         }
         
         .notification.error {
             background: var(--primary);
         }
         
+        /* 移动设备布局优化 */
         @media (max-width: 768px) {
             .content {
                 flex-direction: column;
+                padding: 12px;
             }
             
             h1 {
-                font-size: 2.2rem;
+                font-size: 1.8rem;
             }
             
             .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .panel {
+                padding: 18px 12px;
+            }
+            
+            .result-controls {
+                flex-direction: column;
+            }
+            
+            .result-controls button {
+                margin: 5px 0;
+                width: 100%;
+            }
+            
+            .feature-card {
+                flex: 0 0 calc(100% - 20px);
+            }
+            
+            .step {
+                flex: 0 0 calc(100% - 20px);
+            }
+            
+            .instructions {
+                padding: 20px 12px;
+            }
+            
+            .result {
+                font-size: 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            button {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+            
+            .result-container {
+                min-height: 220px;
+                max-height: 280px;
+            }
+            
+            .result {
+                min-height: 180px;
+            }
+            
+            .feature-icon {
+                font-size: 2rem;
+            }
+            
+            .feature-card h3 {
+                font-size: 1.15rem;
+            }
+            
+            .instructions h2 {
                 font-size: 1.4rem;
             }
+        }
+        
+        /* 移动端优化：按钮组垂直排列 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        /* 移动端优化：文件输入按钮 */
+        .file-input-label {
+            display: block;
+            background: rgba(10, 10, 25, 0.5);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+        }
+        
+        .file-input-label:hover {
+            background: rgba(20, 20, 40, 0.7);
+            border-color: var(--primary);
+        }
+        
+        #image-input {
+            display: none;
         }
     </style>
 </head>
@@ -342,6 +453,7 @@
                 
                 <div class="input-group">
                     <label for="image-input">或上传图片</label>
+                    <label class="file-input-label" for="image-input">选择图片文件</label>
                     <input type="file" id="image-input" accept="image/*">
                     <img id="image-preview" class="image-preview" alt="图片预览">
                 </div>
@@ -355,12 +467,14 @@
                     </select>
                 </div>
                 
-                <button id="convert-text">
-                    <span>文本转ASCII</span>
-                </button>
-                <button id="convert-image" class="secondary">
-                    <span>图片转ASCII</span>
-                </button>
+                <div class="button-group">
+                    <button id="convert-text">
+                        <span>文本转ASCII</span>
+                    </button>
+                    <button id="convert-image" class="secondary">
+                        <span>图片转ASCII</span>
+                    </button>
+                </div>
             </div>
             
             <div class="panel">
